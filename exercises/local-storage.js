@@ -38,3 +38,41 @@
  */
 
 // Your code goes here...
+
+const parentContainer = document.querySelector(".cardsContainer");
+const allItems = document.querySelectorAll(".card");
+let lsStorage = [];
+if (localStorage.getItem("favorites") === null) {
+  localStorage.setItem("favorites", "");
+} else {
+  lsStorage = localStorage.getItem("favorites").split(",");
+}
+
+const loadPage = (LS) => {
+  allItems.forEach((item) => {
+    if (LS.includes(item.id)) {
+      item.style.background = "red";
+    }
+  });
+};
+const stateHandler = (item) => {
+  if (item.id === "") {
+  } else if (lsStorage.includes(item.id)) {
+    lsStorage.splice(lsStorage.indexOf(item.id), 1).join(",");
+    localStorage.setItem("favorites", lsStorage);
+    item.style.background = "white";
+  } else {
+    lsStorage.push(item.id);
+    localStorage.setItem("favorites", lsStorage);
+    item.style.background = "red";
+  }
+};
+
+parentContainer.addEventListener("click", (event) => {
+  stateHandler(event.target);
+});
+loadPage(localStorage.getItem("favorites"));
+
+/* REMINDER
+you were trying to get to change the background from white to red and from red to white
+depending on the LS values, */
